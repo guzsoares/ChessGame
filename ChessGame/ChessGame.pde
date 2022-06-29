@@ -132,7 +132,12 @@ void mouseClicked(){
   posx = mouseX/sq_size;
   posy = mouseY/sq_size;
   
-  if (moveSelected[0] == null){ // check if first click is empty
+  if (mouseButton == RIGHT){
+    moveSelected[0] = null;
+    moveSelected[1] = null;
+  }
+  
+  else if (moveSelected[0] == null){ // check if first click is empty
     
     moveSelected[0] = new PVector(posx,posy);
     
