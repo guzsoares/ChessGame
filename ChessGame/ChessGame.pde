@@ -7,6 +7,8 @@ int sq_size = h_window/dimension;
 int posx;
 int posy;
 PVector[] moveSelected = new PVector[2];
+ArrayList<Move> validMoves;
+boolean moveMade = false;
 
 /* Images variables */
 PImage bR;
@@ -30,6 +32,7 @@ void setup(){
   loadImages();
   moveSelected[0] = null;
   moveSelected[1] = null;
+  validMoves = test.getValidMoves();
 }
 
 void draw(){
@@ -42,7 +45,7 @@ void draw(){
 }
 
 
-void drawSquares(){
+void drawSquares(){ // draw all squares
   background(118,150,86);
   for (int i = 0; i < 8; i++){
     for (int j = 0; j < 8; j++){
@@ -60,7 +63,7 @@ void drawSquares(){
   
 }
 
-void drawPieces(){
+void drawPieces(){ // draw all pieces
   for (int i = 0; i < 8; i++){
     for (int j = 0; j < 8; j++){
       if(test.board[j][i] == "bR"){
@@ -102,7 +105,7 @@ void drawPieces(){
     }
   }
 }
-void loadImages(){
+void loadImages(){ // load all images, only run once
   bR = loadImage("images/bR.png");
   bR.resize(0,sq_size - 5);
   wR = loadImage("images/wR.png");
@@ -133,12 +136,9 @@ void mouseReleased(){ // get mouse clicks
   posx = mouseX/sq_size;
   posy = mouseY/sq_size;
   
-  if (mouseButton == RIGHT){
-    moveSelected[0] = null;
-    moveSelected[1] = null;
-  }
-  if (mouseButton == CENTER && test.movelog.size() > 0){
+  if (mouseButton == CENTER){ // if middle click undo last move
     test.undoMove();
+    moveMade = true;
   }
   
   else if (moveSelected[0] == null){ // check if first click is empty
@@ -161,15 +161,33 @@ void mouseReleased(){ // get mouse clicks
     }
     
   }
+  if (mouseButton == RIGHT){ // if right click deselect
+    moveSelected[0] = null;
+    moveSelected[1] = null;
+  }
 }
 
 void movePiece(){
   if (moveSelected[0] != null && moveSelected[1] != null){ // check if there is mouse clicks
       Move info;
       info = new Move(moveSelected[0],moveSelected[1],test.board);
-      test.makeMove(info);
+      
+      for (int i = 0; i < validMoves.size(); i++){ // check valid moves size
+        if(test.cmp_moves(validMoves.get(i),info)){ // compare if move is in valid moves
+          test.makeMove(info); // make move if valid
+          moveMade = true; // move was made
+        }
+      }
+      
       println(info.chessNotation());
       moveSelected[0] = null;  // reset clicks
       moveSelected[1] = null;
+      
   }
+  
+  if (moveMade){ // get new valid moves for current position
+    validMoves = test.getValidMoves();
+    moveMade = false; // no move was made in new position, so we reset move made
+  }
+  
 }

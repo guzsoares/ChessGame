@@ -10,8 +10,9 @@ class Move{
   int end_row;
   String pieceMoved;
   String pieceCaptured;
+  int moveID; // unique move id for every possible move
   
-  HashMap<Integer, String> initRow(){
+  HashMap<Integer, String> initRow(){ // rows to numbers
     HashMap<Integer, String> map = new HashMap<>();
     map.put(0, "8");
     map.put(1, "7");
@@ -24,7 +25,7 @@ class Move{
     return map;
   }
   
-  HashMap<Integer, String> initCol(){
+  HashMap<Integer, String> initCol(){ // columns to letters
     HashMap<Integer, String> map = new HashMap<>();
     map.put(0, "a");
     map.put(1, "b");
@@ -38,7 +39,7 @@ class Move{
   }
   
   
-  Move(PVector startSq, PVector endSq, String[][] board){
+  Move(PVector startSq, PVector endSq, String[][] board){ // move object
     
     start_row = (int)startSq.x; 
     start_col = (int)startSq.y;
@@ -46,9 +47,11 @@ class Move{
     end_col = (int)endSq.y;
     pieceMoved = board[start_col][start_row];
     pieceCaptured = board[end_col][end_row];
+    moveID = start_row * 1000 + start_col * 100 + end_row * 10 + end_col;
   }
   
-  String chessNotation(){
+  
+  String chessNotation(){ // chess notation function
     String notation = ("" + colToValue.get(start_row)+ rowToValue.get(start_col) + colToValue.get(end_row) + rowToValue.get(end_col));
     return notation;
   }
