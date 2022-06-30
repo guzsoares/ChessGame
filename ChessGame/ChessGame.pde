@@ -23,6 +23,7 @@ PImage wB;
 PImage wK;
 
 void setup(){
+  noStroke();
   size(600,600);
   frameRate(15);
   test = new GameState();
@@ -128,13 +129,16 @@ void loadImages(){
   bP.resize(0,sq_size - 5);
 }
 
-void mouseClicked(){
+void mouseReleased(){ // get mouse clicks
   posx = mouseX/sq_size;
   posy = mouseY/sq_size;
   
   if (mouseButton == RIGHT){
     moveSelected[0] = null;
     moveSelected[1] = null;
+  }
+  if (mouseButton == CENTER && test.movelog.size() > 0){
+    test.undoMove();
   }
   
   else if (moveSelected[0] == null){ // check if first click is empty
@@ -161,17 +165,11 @@ void mouseClicked(){
 
 void movePiece(){
   if (moveSelected[0] != null && moveSelected[1] != null){ // check if there is mouse clicks
-  
-    int startPos_x = (int)moveSelected[0].x; 
-    int startPos_y = (int)moveSelected[0].y;
-    int endPos_x = (int)moveSelected[1].x;
-    int endPos_y = (int)moveSelected[1].y;
-    String piece = test.board[startPos_y][startPos_x];  //  check piece selected
-    
-    test.board[startPos_y][startPos_x] = "--";  // make old position empty square
-    test.board[endPos_y][endPos_x] = piece;  // make new position piece square
-    
-    moveSelected[0] = null;  // reset clicks
-    moveSelected[1] = null;
+      Move info;
+      info = new Move(moveSelected[0],moveSelected[1],test.board);
+      test.makeMove(info);
+      println(info.chessNotation());
+      moveSelected[0] = null;  // reset clicks
+      moveSelected[1] = null;
   }
 }
