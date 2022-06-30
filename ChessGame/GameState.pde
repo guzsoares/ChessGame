@@ -52,22 +52,27 @@ class GameState{
   ArrayList<Move> getAllPossibleMoves(){ // get all possible moves
   
     ArrayList<Move> moves = new ArrayList<Move>(); // move list
+    Move aux;
+    PVector x = new PVector(4,6);
+    PVector y = new PVector(4,4);
+    aux = new Move(x,y,board);
+    moves.add(aux);
+    
     
     for (int i = 0; i < 8; i++){ // start for i
       for (int j = 0; j < 8; j++){ // start for j
         
         char turn = board[j][i].charAt(0); // check whose piece is it
         
-        if ((turn == 'w' && whiteMove) || (turn == 'b' && !whiteMove)){ // start if turn
+        if ((turn == 'w' && whiteMove) && (turn == 'b' && !whiteMove)){ // start if turn
           char piece = board[j][i].charAt(1); // check whick piece is it
           
           if(piece == 'P'){ // start if pawn
-            moves = getPawnMoves(j,i,moves);
-            print(moves);
+            moves = getPawnMoves(i,j,moves);
           } // end if pawn
           
           else if (piece == 'R'){ // start if rook
-            getRookMoves(j,i,moves);
+            getRookMoves(i,j,moves);
           } // end if rook
           
         } // end if turn
@@ -88,18 +93,11 @@ class GameState{
   }
   
   
-  ArrayList<Move> getPawnMoves(int row, int col, ArrayList<Move> moves){
-    Move aux;
-    PVector curr_pos = new PVector(row,col);
-    for (int i = 1; i <= 2; i++){
-      PVector x = new PVector(row,col-1);
-      aux = new Move(curr_pos,x,board);
-      moves.add(aux);
-    }
+  ArrayList<Move> getPawnMoves(int col, int row, ArrayList<Move> moves){
     return moves;
   }
   
-  ArrayList<Move> getRookMoves(int row, int col, ArrayList<Move> moves){
+  ArrayList<Move> getRookMoves(int col, int row, ArrayList<Move> moves){
     return moves;
   }
   
