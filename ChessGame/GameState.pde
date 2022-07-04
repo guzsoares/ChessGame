@@ -189,6 +189,9 @@ class GameState{
         moves.add(aux);
         break;
         }
+        else if(board[i][col].charAt(0) == board[row][col].charAt(0) && i != row){ // rook stop if piece is same color
+        break;
+        }
       }
       
       for (int i = row; i >= 0; i--){ // rook move up
@@ -201,6 +204,9 @@ class GameState{
         end_p = new PVector(col,i);
         aux = new Move(st_pos,end_p,board);
         moves.add(aux);
+        break;
+        }
+        else if(board[i][col].charAt(0) == board[row][col].charAt(0) && i != row){ // rook stop if piece is same color
         break;
         }
       }
@@ -217,6 +223,9 @@ class GameState{
         moves.add(aux);
         break;
         }
+        else if(board[row][i].charAt(0) == board[row][col].charAt(0) && i != col){ // rook stop if piece is same color
+        break;
+        }
       }
       
       for (int i = col; i <= 7; i++){ // rook move right
@@ -229,6 +238,9 @@ class GameState{
         end_p = new PVector(i,row);
         aux = new Move(st_pos,end_p,board);
         moves.add(aux);
+        break;
+        }
+        else if(board[row][i].charAt(0) == board[row][col].charAt(0) && i != col){ // rook stop if piece is same color
         break;
         }
       }
@@ -255,6 +267,9 @@ class GameState{
           moves.add(aux);
           break;
         }
+        else if(board[i][j].charAt(0) == board[row][col].charAt(0) && i != row && j != col){ // bishop stop if piece is same color
+          break;
+        }
       }
       
       for (int i = row, j = col; i >= 0 && j <= 7; i--, j++){ // bishop right up
@@ -267,6 +282,9 @@ class GameState{
           end_p = new PVector(j,i);
           aux = new Move(st_pos,end_p,board);
           moves.add(aux);
+          break;
+        }
+        else if(board[i][j].charAt(0) == board[row][col].charAt(0) && i != row && j != col){ // bisho stop if piece is same color
           break;
         }
       }
@@ -283,6 +301,9 @@ class GameState{
           moves.add(aux);
           break;
         }
+        else if(board[i][j].charAt(0) == board[row][col].charAt(0) && i != row && j != col){ // bishop stop if piece is same color
+          break;
+        }
       }
       
       for (int i = row, j = col; i >= 0 && j >= 0; i--, j--){ // bishop left up
@@ -295,6 +316,9 @@ class GameState{
           end_p = new PVector(j,i);
           aux = new Move(st_pos,end_p,board);
           moves.add(aux);
+          break;
+        }
+        else if(board[i][j].charAt(0) == board[row][col].charAt(0) && i != row && j != col){ // bishop stop if piece is same color
           break;
         }
       }
@@ -317,33 +341,33 @@ class GameState{
         end_p = new PVector(col,row+1);
         aux = new Move(st_pos,end_p,board);
         moves.add(aux);
-        if(col+1 <= 7 && board[row+1][col-1].charAt(0) != board[row][col].charAt(0)){
-          end_p = new PVector(col+1,row+1);
-          aux = new Move(st_pos,end_p,board);
-          moves.add(aux);
-        }
-        if(col-1 >= 0 && board[row+1][col-1].charAt(0) != board[row][col].charAt(0)){
-          end_p = new PVector(col-1,row+1);
-          aux = new Move(st_pos,end_p,board);
-          moves.add(aux);
-        }
       }
+      if(row+1<=7 && col+1 <= 7 && board[row+1][col-1].charAt(0) != board[row][col].charAt(0)){
+        end_p = new PVector(col+1,row+1);
+        aux = new Move(st_pos,end_p,board);
+        moves.add(aux);
+        }
+      if(row+1<=7 && col-1 >= 0 && board[row+1][col-1].charAt(0) != board[row][col].charAt(0)){
+        end_p = new PVector(col-1,row+1);
+        aux = new Move(st_pos,end_p,board);
+        moves.add(aux);
+        }
       
       if(row-1>=0 && board[row-1][col].charAt(0) != board[row][col].charAt(0)){
         end_p = new PVector(col,row-1);
         aux = new Move(st_pos,end_p,board);
         moves.add(aux);
-        if(col+1 <= 7 && board[row-1][col+1].charAt(0) != board[row][col].charAt(0)){
-          end_p = new PVector(col+1,row-1);
-          aux = new Move(st_pos,end_p,board);
-          moves.add(aux);
         }
-        if(col-1 >= 0 && board[row-1][col-1].charAt(0) != board[row][col].charAt(0)){
-          end_p = new PVector(col-1,row-1);
-          aux = new Move(st_pos,end_p,board);
-          moves.add(aux);
+      if(row-1>=0 && col+1 <= 7 && board[row-1][col+1].charAt(0) != board[row][col].charAt(0)){
+        end_p = new PVector(col+1,row-1);
+        aux = new Move(st_pos,end_p,board);
+        moves.add(aux);
         }
-      }
+      if(row-1>=0 && col-1 >= 0 && board[row-1][col-1].charAt(0) != board[row][col].charAt(0)){
+        end_p = new PVector(col-1,row-1);
+        aux = new Move(st_pos,end_p,board);
+        moves.add(aux);
+        }
       
       if(col+1 <= 7 && board[row][col+1].charAt(0) != board[row][col].charAt(0)){
           end_p = new PVector(col+1,row);
