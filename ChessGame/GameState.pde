@@ -27,7 +27,7 @@ class GameState{
     board[info.start_col][info.start_row] = "--";
     board[info.end_col][info.end_row] = info.pieceMoved;
     movelog.add(info);
-    whiteMove = whiteMove;
+    whiteMove = !whiteMove;
     
   }
   
@@ -39,7 +39,7 @@ class GameState{
       board[aux.end_col][aux.end_row] = aux.pieceCaptured;
       board[aux.start_col][aux.start_row] = aux.pieceMoved;
       movelog.remove(movelog.size()-1);
-      whiteMove = whiteMove;
+      whiteMove = !whiteMove;
       
     }
   }
@@ -111,7 +111,7 @@ class GameState{
     
     
     if (board[row][col].charAt(0) == 'w'){ // white moves
-      if (row == 6 && board[row-2][col] == "--"){
+      if (row == 6 && board[row-2][col] == "--" && board[row-1][col] == "--"){
         end_p = new PVector(col,row-2);
         aux = new Move(st_pos,end_p,board);
         moves.add(aux);
