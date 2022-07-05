@@ -25,7 +25,8 @@ PImage wB;
 PImage wK;
 
 void setup(){
-  noStroke();
+  strokeCap(PROJECT);
+  strokeWeight(1.25);
   size(600,600);
   frameRate(15);
   test = new GameState();
@@ -60,6 +61,14 @@ void drawSquares(){ // draw all squares
   if (moveSelected[0] != null){ //highlight move
     fill(255,100,100);
     square(moveSelected[0].x*sq_size,moveSelected[0].y*sq_size,sq_size);
+    for (int i = (validMoves.size() - 1); i >= 0; i--){
+      Move aux;
+      aux = validMoves.get(i);
+      if (aux.start_row == (int)moveSelected[0].x && aux.start_col == (int)moveSelected[0].y){
+        fill(167,100,100);
+        square(aux.end_row*sq_size,aux.end_col*sq_size,sq_size);
+      }
+    }
   }
   
 }
