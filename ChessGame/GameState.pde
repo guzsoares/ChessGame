@@ -549,8 +549,8 @@ class GameState{
       text(loser + " has been checkmated",100,300);
     }
     else if(staleMate){
-      textSize(40);
-      text("Stalemate",100,300);
+      textSize(80);
+      text("Stalemate",170,300);
     }
 }
   
