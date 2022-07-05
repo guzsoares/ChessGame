@@ -82,7 +82,7 @@ class GameState{
   moves = getAllPossibleMoves();
   
   // 2) for each move, make the move
-  for (int i = (moves.size() - 1); i > 0; i--){
+  for (int i = (moves.size() - 1); i >= 0; i--){
     makeMove(moves.get(i));
     
     // 3) generate all opponent moves
@@ -432,7 +432,7 @@ class GameState{
         aux = new Move(st_pos,end_p,board);
         moves.add(aux);
       }
-      if(row+1<=7 && col+1 <= 7 && board[row+1][col-1].charAt(0) != board[row][col].charAt(0)){
+      if(row+1<=7 && col+1 <= 7 && board[row+1][col+1].charAt(0) != board[row][col].charAt(0)){
         end_p = new PVector(col+1,row+1);
         aux = new Move(st_pos,end_p,board);
         moves.add(aux);
@@ -537,6 +537,7 @@ class GameState{
       
   void gameOver(){
     String loser;
+    fill(100,100,100);
     if (whiteMove){
       loser = new String("White");
     }
@@ -544,12 +545,12 @@ class GameState{
       loser = new String("Black");
     }
     if(checkMate){
-      textSize(100);
-      text(loser + " has been checkmated",300,300);
+      textSize(40);
+      text(loser + " has been checkmated",100,300);
     }
     else if(staleMate){
-      textSize(100);
-      text("Stalemate",300,300);
+      textSize(40);
+      text("Stalemate",100,300);
     }
 }
   
