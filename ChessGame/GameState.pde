@@ -5,6 +5,10 @@ class GameState{
   String[][] board; // board
   boolean whiteMove; // whose turn is it to play
   ArrayList<Move> movelog = new ArrayList<Move>(); // all game moves
+  PVector whiteKing;
+  PVector blackKing;
+  boolean checkMate;
+  boolean staleMate;
   
   
   
@@ -20,6 +24,10 @@ class GameState{
     {"wR","wN","wB","wQ","wK","wB","wN","wR"}
     };
     whiteMove = true; // white starts
+    whiteKing = new PVector(7,4);
+    blackKing = new PVector(0,4);
+    checkMate = false;
+    staleMate = false;
   }
   
   void makeMove(Move info){ // make move function
@@ -28,6 +36,17 @@ class GameState{
     board[info.end_col][info.end_row] = info.pieceMoved;
     movelog.add(info);
     whiteMove = !whiteMove;
+    
+    // update king location
+    
+    if (info.pieceMoved == "wK"){
+      whiteKing.x = info.end_col;
+      whiteKing.y = info.end_row;
+    }
+    else if (info.pieceMoved == "bK"){
+      blackKing.x = info.end_col;
+      blackKing.y = info.end_row;
+    }
     
   }
   
@@ -41,12 +60,83 @@ class GameState{
       movelog.remove(movelog.size()-1);
       whiteMove = !whiteMove;
       
+      // update king location
+      
+      if (aux.pieceMoved == "wK"){
+      whiteKing.x = aux.start_col;
+      whiteKing.y = aux.start_row;
+      }
+    else if (aux.pieceMoved == "bK"){
+      blackKing.x = aux.start_col;
+      blackKing.y = aux.start_row;
+      }
+      
     }
   }
   
   ArrayList<Move> getValidMoves(){ // get all valid moves
+  // Naive algorithm
   
-    return getAllPossibleMoves();
+  // 1) generate all moves
+  ArrayList<Move> moves = new ArrayList<Move>();
+  moves = getAllPossibleMoves();
+  
+  // 2) for each move, make the move
+  for (int i = (moves.size() - 1); i > 0; i--){
+    makeMove(moves.get(i));
+    
+    // 3) generate all opponent moves
+    // 4) for each oponnent move check if they attack your king
+    
+    whiteMove = !whiteMove;
+    if (inCheck()){
+    moves.remove(i); // 5) if they attack your king == not valid
+    }
+    whiteMove = !whiteMove;
+    undoMove();
+  }
+  print(moves.size());
+  if (moves.size() == 0){
+    if(inCheck()){
+      checkMate = true;
+    }
+    else{
+      staleMate = true;
+    }
+  }
+  else{
+    checkMate = false;
+    staleMate = false;
+  }
+  
+    return moves;
+  }
+  
+  boolean inCheck(){
+    if (whiteMove){
+      return squareAttacked((int)whiteKing.y,(int)whiteKing.x);
+    }
+    else{
+      return squareAttacked((int)blackKing.y,(int)blackKing.x);
+    }
+  }
+  
+  boolean squareAttacked(int row, int col){
+    whiteMove = !whiteMove; // switch turns to check for moves
+    
+    ArrayList<Move> oppMoves = new ArrayList<Move>();
+    oppMoves = getAllPossibleMoves();
+    
+    for (int i = oppMoves.size()-1; i > 0; i--){
+      Move aux;
+      aux = oppMoves.get(i);
+      if (aux.end_row == row && aux.end_col == col){
+        whiteMove = !whiteMove; // switch turns again
+        return true;
+      }
+    }
+    whiteMove = !whiteMove;
+    return false;
   }
   
   ArrayList<Move> getAllPossibleMoves(){ // get all possible moves
@@ -444,5 +534,23 @@ class GameState{
         return moves;
         
       }
+      
+  void gameOver(){
+    String loser;
+    if (whiteMove){
+      loser = new String("White");
+    }
+    else{
+      loser = new String("Black");
+    }
+    if(checkMate){
+      textSize(100);
+      text(loser + " has been checkmated",300,300);
+    }
+    else if(staleMate){
+      textSize(100);
+      text("Stalemate",300,300);
+    }
+}
   
 }

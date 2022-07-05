@@ -39,6 +39,7 @@ void draw(){
   drawSquares();
   drawPieces();
   movePiece();
+  test.gameOver();
   
   
   
