@@ -48,6 +48,8 @@ class GameState{
       blackKing.y = info.end_row;
     }
     
+    //detectStalemate();
+    
   }
   
   void undoMove(){ // undo move function
@@ -79,7 +81,9 @@ class GameState{
   
   // 1) generate all moves
   ArrayList<Move> moves = new ArrayList<Move>();
-  moves = getAllPossibleMoves();
+  if (staleMate != true){
+    moves = getAllPossibleMoves();
+  }
   
   // 2) for each move, make the move
   for (int i = (moves.size() - 1); i >= 0; i--){
@@ -95,7 +99,6 @@ class GameState{
     whiteMove = !whiteMove;
     undoMove();
   }
-  print(moves.size());
   if (moves.size() == 0){
     if(inCheck()){
       checkMate = true;
@@ -553,5 +556,14 @@ class GameState{
       text("Stalemate",170,300);
     }
 }
+
+  void detectStalemate(){
+    if (movelog.size() >= 9){
+      int aux = movelog.size() - 1;
+      if(cmp_moves(movelog.get(aux),movelog.get(aux-4)) && cmp_moves(movelog.get(aux-4),movelog.get(aux-8)) && cmp_moves(movelog.get(aux-1),movelog.get(aux-5)) && cmp_moves(movelog.get(aux-5),movelog.get(aux-9)) ){
+        staleMate = true;
+      }
+    }
+  }
   
 }

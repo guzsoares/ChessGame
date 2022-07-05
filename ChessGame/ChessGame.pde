@@ -146,6 +146,10 @@ void mouseReleased(){ // get mouse clicks
   posx = mouseX/sq_size;
   posy = mouseY/sq_size;
   
+  if (mouseX > 600 || mouseY > 600 || mouseX < 0 || mouseY < 0){
+    return;
+  }
+  
   if (mouseButton == CENTER){ // if middle click undo last move
     test.undoMove();
     moveMade = true;
