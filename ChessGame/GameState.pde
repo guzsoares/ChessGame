@@ -130,7 +130,7 @@ class GameState{
     ArrayList<Move> oppMoves = new ArrayList<Move>();
     oppMoves = getAllPossibleMoves();
     
-    for (int i = oppMoves.size()-1; i > 0; i--){
+    for (int i = oppMoves.size()-1; i >= 0; i--){
       Move aux;
       aux = oppMoves.get(i);
       if (aux.end_row == row && aux.end_col == col){
